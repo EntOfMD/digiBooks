@@ -14,4 +14,6 @@ This is good for anyone that needs a finance situation looked at. I had a bad hi
 <li>How to read data IF it is saved</li>
 <li>Link to google spreadsheets for charts</li>
 <li>More personalized experience</li>
+<li>???</li>
+<li>profit</li>
 </ul>

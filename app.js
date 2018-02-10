@@ -71,7 +71,7 @@ var UIController = (function () {
         inputValue: '.add__value',
         addButton: '.add__btn',
         incomeContainer: '.income__list',
-        expenseContainer: '.expense__list',
+        expensesContainer: '.expenses__list',
 
     };
     return {
@@ -92,7 +92,7 @@ var UIController = (function () {
                 html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 
             } else if (type === 'exp') {
-                element = DOMstrings.expenseContainer;
+                element = DOMstrings.expensesContainer;
                 html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
             }
 
@@ -139,11 +139,10 @@ var controller = (function (budgetCtrl, UICtrl) {
         var input, newItem;
         //1. Get field input data
         input = UICtrl.getinput();
-        // console.log(input);  //does this need to be here?
-
-
+        
         //2. Add the item to the budget controller
         newItem = budgetCtrl.additem(input.type, input.description, input.value);
+        
         //3. Add the item to the UI
         UICtrl.addListItems(newItem, input.type);
 

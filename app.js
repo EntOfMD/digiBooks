@@ -154,7 +154,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         //3. Display the budget on the UI
 
     };
-    
+
 
     var ctrlAddItem = function () {
         var input, newItem;

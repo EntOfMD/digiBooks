@@ -123,7 +123,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
         document.querySelector(DOM.addButton).addEventListener('click', ctrlAddItem);
 
-        document.addEventListener('keypress', function (e) {
+        document.addEventListener('keypress', function (e) { //this makes sure when you hit 'ENTER', it enters the info.
 
             if (e.keyCode === 13 || e.which === 13) {
                 ctrlAddItem();
@@ -137,6 +137,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
     var ctrlAddItem = function () {
         var input, newItem;
+
         //1. Get field input data
         input = UICtrl.getinput();
         

@@ -154,7 +154,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         //3. Display the budget on the UI
 
     };
-
+    
 
     var ctrlAddItem = function () {
         var input, newItem;
@@ -162,19 +162,20 @@ var controller = (function (budgetCtrl, UICtrl) {
         //1. Get field input data
         input = UICtrl.getinput();
 
+        //this checks whether the input fields are empty, below 1, and not NaN
+        if (input.description !== "" && !isNaN(input.value) && input.value > 0) {
 
-        if (input.description !=="" && !isNaN(input.value) && input.value > 0){
-        //2. Add the item to the budget controller
-        newItem = budgetCtrl.additem(input.type, input.description, input.value);
+            //2. Add the item to the budget controller
+            newItem = budgetCtrl.additem(input.type, input.description, input.value);
 
-        //3. Add the item to the UI
-        UICtrl.addListItems(newItem, input.type);
+            //3. Add the item to the UI
+            UICtrl.addListItems(newItem, input.type);
 
-        //4. Clear the fields
-        UICtrl.clearFields();
+            //4. Clear the fields
+            UICtrl.clearFields();
 
-        //5. Calculate and update the budget
-        updateBudget();
+            //5. Calculate and update the budget
+            updateBudget();
         }
     };
     return {

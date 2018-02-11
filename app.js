@@ -72,7 +72,6 @@ var UIController = (function () {
         addButton: '.add__btn',
         incomeContainer: '.income__list',
         expensesContainer: '.expenses__list',
-
     };
     return {
         getinput: function () {
@@ -96,27 +95,27 @@ var UIController = (function () {
                 html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
             }
 
-            // Replace the placeholder text with some actual data
+            // Replace the placeholder text with user data
             newHTML = html.replace('%id%', obj.id);
             newHTML = newHTML.replace('%description%', obj.description);
             newHTML = newHTML.replace('%value%', obj.value);
 
             // Insert the HTML into the DOM
-
             document.querySelector(element).insertAdjacentHTML('beforeend', newHTML);
-
         },
 
-        clearFields: function() {
-            var fields,fieldsArr;
-            
+        clearFields: function () {
+            var fields, fieldsArr;
+
+            //querySelectorAll outputs a list
             fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
 
+            //We need to trick the system by thinking its an array, use the 'call' function
             fieldsArr = Array.prototype.slice.call(fields);
 
-            fieldsArr.forEach(function (value, index, array){
-                value.value = "";
-
+            //Now loop it
+            fieldsArr.forEach(function (value, index, array) {
+            value.value = "";
             });
         },
 
@@ -141,9 +140,7 @@ var controller = (function (budgetCtrl, UICtrl) {
             if (e.keyCode === 13 || e.which === 13) {
                 ctrlAddItem();
             }
-
         });
-
     };
 
 
@@ -153,16 +150,16 @@ var controller = (function (budgetCtrl, UICtrl) {
 
         //1. Get field input data
         input = UICtrl.getinput();
-        
+
         //2. Add the item to the budget controller
         newItem = budgetCtrl.additem(input.type, input.description, input.value);
-        
+
         //3. Add the item to the UI
         UICtrl.addListItems(newItem, input.type);
 
         //4. Clear the fields
         UICtrl.clearFields();
-        
+
         //5. Calculate the budget
 
         //6. Display the budget

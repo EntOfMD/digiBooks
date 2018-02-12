@@ -13,8 +13,17 @@ var budgetController = (function () {
         this.value = value;
     };
 
-    var data = {
+    var calculateTotal = function(type){
+        var sum;
 
+            sum = 0; //Base 
+            data.allItems[type].forEach(function(e){ //this works for both exp and inc
+                sum += e.value;
+            });
+            data.total[type] = sum; //storing the value of sum
+    };
+
+    var data = {
         allItems: {
             exp: [],
             inc: []
@@ -22,7 +31,9 @@ var budgetController = (function () {
         totals: {
             exp: 0,
             inc: 0
-        }
+        },
+        budget: 0,
+        percentage: -1 //by using -1, it doesn't technically "exist"
 
     };
 
@@ -53,8 +64,16 @@ var budgetController = (function () {
         },
 
         calculateBudget: function () {
+            // calculates total income and expenses
+            calculateTotal('exp');
+            calculateTotal('inc');
 
+            // calculates the budet : income - expenses
+            data.budget = data.totals.inc - data.totals.exp;
 
+            // calculates the percentage of income that we spent
+            data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+            // if expense = 100 and income = 300, spent 33.333%, is written as  100/300 * 100, but we don't want decimals
         },
         testing: function () {
             console.log(data);
@@ -153,7 +172,8 @@ var controller = (function (budgetCtrl, UICtrl) {
 
     var updateBudget = function () {
         //1. Calculate the budget
-
+        budgetCtrl.calculateBudget();
+        
         //2. Return the budget
 
         //3. Display the budget on the UI

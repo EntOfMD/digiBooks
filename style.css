@@ -112,6 +112,17 @@ body {
     text-align: center;
 }
 
+.name_box,
+.name_label {
+    float: right;
+    margin-top: 10px;
+    margin: 5px;
+}
+
+.name_label {
+    text-align: center;
+}
+
 /**********************************************
 *** BOTTOM PART
 **********************************************/

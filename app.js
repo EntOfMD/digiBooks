@@ -20,7 +20,7 @@ var budgetController = (function () {
         data.allItems[type].forEach(function (e) { //this works for both exp and inc
             sum += e.value;
         });
-        data.total[type] = sum; //storing the value of sum
+        data.totals[type] = sum; //storing the value of sum
     };
 
     var data = {
@@ -72,9 +72,24 @@ var budgetController = (function () {
             data.budget = data.totals.inc - data.totals.exp;
 
             // calculates the percentage of income that we spent
-            data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+            if (data.totals.inc > 0) { 
+                data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+            } else {
+                data.percentage = -1;
+            }
+
             // if expense = 100 and income = 300, spent 33.333%, is written as  100/300 * 100, but we don't want decimals
         },
+
+        getBudget: function () {
+            return {
+                budget: data.budget,
+                totalInc: data.totals.inc,
+                totalExp: data.totals.exp,
+                percentage: data.percentage
+            }
+        },
+
         testing: function () {
             console.log(data);
         }
@@ -99,15 +114,15 @@ var UIController = (function () {
     };
     return {
         getinput: function () {
-            return { //instead of having 3 var, return 3 properties.
-                type: document.querySelector(DOMstrings.inputType).value, // Will be either inc or exp
-                description: document.querySelector(DOMstrings.inputDescription).value,
+            return { //instead of repeating myself, this will loop for both inc and exp
+                type: document.querySelector(DOMstrings.inputType).value, 
+                description: document.querySelector(DOMstrings.inputDescription).value, 
                 value: parseFloat(document.querySelector(DOMstrings.inputValue).value) //parseFloat converts string to floating integer
             }
         },
 
         addListItems: function (obj, type) {
-            var html, newHTML, element;
+            var html, newHTML, element; 
             // Create HTML string with placeholder text
 
             if (type === 'inc') {
@@ -175,9 +190,10 @@ var controller = (function (budgetCtrl, UICtrl) {
         budgetCtrl.calculateBudget();
 
         //2. Return the budget
+        var budget = budgetCtrl.getBudget();
 
         //3. Display the budget on the UI
-
+        console.log(budget);
     };
 
 

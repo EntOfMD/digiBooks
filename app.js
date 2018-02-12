@@ -13,14 +13,14 @@ var budgetController = (function () {
         this.value = value;
     };
 
-    var calculateTotal = function(type){
+    var calculateTotal = function (type) {
         var sum;
 
-            sum = 0; //Base 
-            data.allItems[type].forEach(function(e){ //this works for both exp and inc
-                sum += e.value;
-            });
-            data.total[type] = sum; //storing the value of sum
+        sum = 0; //Base 
+        data.allItems[type].forEach(function (e) { //this works for both exp and inc
+            sum += e.value;
+        });
+        data.total[type] = sum; //storing the value of sum
     };
 
     var data = {
@@ -173,7 +173,7 @@ var controller = (function (budgetCtrl, UICtrl) {
     var updateBudget = function () {
         //1. Calculate the budget
         budgetCtrl.calculateBudget();
-        
+
         //2. Return the budget
 
         //3. Display the budget on the UI

@@ -8,15 +8,15 @@ var budgetController = (function () {
     };
 
     // This one calculates it
-    Expense.prototype.calcPercentage = function(totalIncome) {
-         if(totalIncome > 0){
-             this.percentage = Math.round((this.value / totalIncome) * 100);
-         } else {
+    Expense.prototype.calcPercentage = function (totalIncome) {
+        if (totalIncome > 0) {
+            this.percentage = Math.round((this.value / totalIncome) * 100);
+        } else {
             this.percentage = -1;
-         } 
+        }
     };
     // This one returns it
-    Expense.prototype.getPercentage = function() {
+    Expense.prototype.getPercentage = function () {
         return this.percentage;
     };
 
@@ -108,14 +108,14 @@ var budgetController = (function () {
             // if expense = 100 and income = 300, spent 33.333%, is written as  100/300 * 100, but we don't want decimals
         },
 
-        calculatePercentages: function() {
-            data.allItems.exp.forEach(function(cur){
+        calculatePercentages: function () {
+            data.allItems.exp.forEach(function (cur) {
                 cur.calcPercentage(data.totals.inc);
             });
         },
 
-        getPercentages: function(){
-            var allPerc = data.allItems.exp.map(function(cur){
+        getPercentages: function () {
+            var allPerc = data.allItems.exp.map(function (cur) {
                 return cur.getPercentage();
             });
             return allPerc;
@@ -150,7 +150,8 @@ var UIController = (function () {
         incomeLabel: '.budget__income--value',
         expenseLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
-        container: '.container'
+        container: '.container',
+        expensesPercLabel: '.item__percentage'
     };
     return {
         getinput: function () {
@@ -207,18 +208,36 @@ var UIController = (function () {
         },
 
         displayBudget: function (obj) {
-
             //refering to getBuget method
             document.querySelector(DOMstrings.budgetLabel).textContent = '$' + obj.budget;
             document.querySelector(DOMstrings.incomeLabel).textContent = '+ $' + obj.totalInc;
             document.querySelector(DOMstrings.expenseLabel).textContent = '- $' + obj.totalExp;
-
             // This is so that % will be aesthetically nice 
             if (obj.percentage > 0) {
                 document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
             } else {
                 document.querySelector(DOMstrings.percentageLabel).textContent = '---';
             }
+        },
+
+        displayPercentages: function (percentages) {
+
+            //this creates a nodelist
+            var fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
+
+            // HERE IS A FIRST CLASS FUNCTION AT WORK!! A FUNCTION PASSING FUNCTIONS
+            var nodeListForEach = function (list, callback) {
+                for (var i = 0; i < list.length; i++) {
+                    callback(list[i], i);
+                }
+            };
+            nodeListForEach(fields, function (current, index) {
+                if (percentages[index] > 0) {
+                    current.textContent = percentages[index] + '%';
+                } else {
+                    current.textContent = '---';
+                }
+            });
         },
 
         getDOMstrings: function () {
@@ -258,15 +277,14 @@ var controller = (function (budgetCtrl, UICtrl) {
         UICtrl.displayBudget(budget);
     };
 
-    var updatePercentages = function() {
-    
+    var updatePercentages = function () {
+
         // 1. have to calculate the percentages
-            budgetCtrl.calculatePercentages();
+        budgetCtrl.calculatePercentages();
         // 2. read them from budgetCtrl
         var percentages = budgetCtrl.getPercentages();
         // 3. update the UI with the new percentages
-            console.log(percentages);
-        
+        UICtrl.displayPercentages(percentages);
     };
 
     var ctrlAddItem = function () {

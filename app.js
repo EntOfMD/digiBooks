@@ -188,13 +188,12 @@ var UIController = (function () {
             document.querySelector(DOMstrings.incomeLabel).textContent = '+ $' + obj.totalInc;
             document.querySelector(DOMstrings.expenseLabel).textContent = '- $' + obj.totalExp;
 
-
+            // This is so that % will be aesthetically nice 
             if (obj.percentage > 0) {
                 document.querySelector(DOMstrings.percentageLabel).textContent = obj.percentage + '%';
             } else {
                 document.querySelector(DOMstrings.percentageLabel).textContent = '---';
             }
-
         },
 
         getDOMstrings: function () {
@@ -234,6 +233,16 @@ var controller = (function (budgetCtrl, UICtrl) {
         UICtrl.displayBudget(budget);
     };
 
+    var updatePercentages = function() {
+    
+        // 1. have to calculate the percentages
+
+        // 2. read them from budgetCtrl
+
+        // 3. update the UI with the new percentages
+
+        
+    };
 
     var ctrlAddItem = function () {
         var input, newItem;
@@ -255,6 +264,9 @@ var controller = (function (budgetCtrl, UICtrl) {
 
             //5. Calculate and update the budget
             updateBudget();
+
+            //6. Calculate and update percentages
+            updatePercentages();
         }
     };
 
@@ -263,6 +275,7 @@ var controller = (function (budgetCtrl, UICtrl) {
 
         itemID = e.target.parentNode.parentNode.parentNode.parentNode.id;
 
+        //
         if (itemID) {
             splitID = itemID.split('-');
             type = splitID[0];
@@ -277,7 +290,6 @@ var controller = (function (budgetCtrl, UICtrl) {
 
             // 3. Update and show the new budget
             updateBudget();
-
         }
     };
     return {

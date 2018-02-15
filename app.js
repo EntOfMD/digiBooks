@@ -149,7 +149,8 @@ var UIController = (function () {
         expenseLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
         container: '.container',
-        expensesPercLabel: '.item__percentage'
+        expensesPercLabel: '.item__percentage',
+        dateLabel: '.budget__title--month'
     };
 
     var formatNumber = function (num, type) {
@@ -253,6 +254,18 @@ var UIController = (function () {
                 }
             });
         },
+
+        displayMonth: function(){
+            var now, month, year, monthName;
+            now = new Date(); //If Date is empty, it'll return today's date
+            month = now.getMonth();
+            year = now.getFullYear();
+         // var christmas = new Date(2016, 11, 25); // how to set a specific date. note: 11=december
+
+            monthName = ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            document.querySelector(DOMstrings.dateLabel).textContent = monthName[month] + ', ' + year; 
+        },
+        
         getDOMstrings: function () {
             return DOMstrings;
         }
@@ -353,7 +366,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         init: function () {
             //Let's us know that the program started
             console.log('Application has started.');
-
+            UICtrl.displayMonth();
             //Here we set the default value to 0 on load
             UICtrl.displayBudget({
                 budget: 0,

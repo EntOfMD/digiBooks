@@ -6,8 +6,7 @@ var budgetController = (function () {
         this.description = description;
         this.value = value;
     };
-
-    // This one calculates it
+    // This one calculates the percentages
     Expense.prototype.calcPercentage = function (totalIncome) {
         if (totalIncome > 0) {
             this.percentage = Math.round((this.value / totalIncome) * 100);
@@ -15,10 +14,12 @@ var budgetController = (function () {
             this.percentage = -1;
         }
     };
-    // This one returns it
+    // refer to Expense.prototype.calcPercentage 
+    // This one returns the calculated percentages.. simplest function ever!
     Expense.prototype.getPercentage = function () {
         return this.percentage;
     };
+
 
     var Income = function (id, description, value) {
         this.id = id;
@@ -153,6 +154,26 @@ var UIController = (function () {
         container: '.container',
         expensesPercLabel: '.item__percentage'
     };
+
+    var formatNumber = function (num, type) {
+        var numSplit, int, dec;
+        /* RULES
+        + or- before number
+        exactly 2 decimal points
+        comma seperating the thousands
+        */
+        num = Math.abs(num);
+        num = num.toFixed(2);
+        numSplit = num.split('.');
+        int = numSplit[0];
+        dec = numSplit[1];
+
+
+        if (int.length > 3) {
+            int = int.substr(0, int.length - 3) + '.' + int.substr(int.length - 3, 3);
+        }
+        return (type === 'exp' ? '-' : '+') + ' ' + int.dec + '.' + ' ';
+    },
     return {
         getinput: function () {
             return { //instead of repeating myself, this will loop for both inc and exp
@@ -178,7 +199,7 @@ var UIController = (function () {
             // Replace the placeholder text with user data
             newHTML = html.replace('%id%', obj.id);
             newHTML = newHTML.replace('%description%', obj.description);
-            newHTML = newHTML.replace('%value%', obj.value);
+            newHTML = newHTML.replace('%value%', formatNumber(obj.value, type));
 
             // Insert the HTML into the DOM
             document.querySelector(element).insertAdjacentHTML('beforeend', newHTML);
@@ -194,15 +215,12 @@ var UIController = (function () {
 
             //querySelectorAll outputs a list
             fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
-
             //We need to trick the system by thinking its an array, use the 'call' function
             fieldsArr = Array.prototype.slice.call(fields);
-
             //Now loop it
             fieldsArr.forEach(function (value, index, array) {
                 value.value = "";
             });
-
             //Cursor will focus on first field
             fieldsArr[0].focus();
         },
@@ -221,7 +239,6 @@ var UIController = (function () {
         },
 
         displayPercentages: function (percentages) {
-
             //this creates a nodelist
             var fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
 
@@ -239,7 +256,6 @@ var UIController = (function () {
                 }
             });
         },
-
         getDOMstrings: function () {
             return DOMstrings;
         }

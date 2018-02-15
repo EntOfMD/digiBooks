@@ -168,7 +168,7 @@ var UIController = (function () {
         if (int.length > 3) {
             int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
         }
-        return (type == 'exp' ? '-' : '+') + ' ' + int.dec;
+        return (type == 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
     };
     return {
         getinput: function () {

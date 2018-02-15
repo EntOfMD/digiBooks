@@ -62,17 +62,14 @@ var budgetController = (function () {
             } else {
                 ID = 0;
             }
-
             //Create new item based on 'income' or 'expense' type
             if (type === 'exp') {
                 newItem = new Expense(ID, des, val);
             } else if (type === 'inc') {
                 newItem = new Income(ID, des, val);
             };
-
             //Push it to the data structure
             data.allItems[type].push(newItem);
-
             //Returns the new element
             return newItem;
         },
@@ -165,15 +162,14 @@ var UIController = (function () {
         num = Math.abs(num);
         num = num.toFixed(2);
         numSplit = num.split('.');
+        
         int = numSplit[0];
         dec = numSplit[1];
-
-
         if (int.length > 3) {
-            int = int.substr(0, int.length - 3) + '.' + int.substr(int.length - 3, 3);
+            int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
         }
-        return (type === 'exp' ? '-' : '+') + ' ' + int.dec + '.' + ' ';
-    },
+        return (type == 'exp' ? '-' : '+') + ' ' + int.dec;
+    };
     return {
         getinput: function () {
             return { //instead of repeating myself, this will loop for both inc and exp
@@ -199,6 +195,7 @@ var UIController = (function () {
             // Replace the placeholder text with user data
             newHTML = html.replace('%id%', obj.id);
             newHTML = newHTML.replace('%description%', obj.description);
+            // newHTML = newHTML.replace('%value%', obj.value);
             newHTML = newHTML.replace('%value%', formatNumber(obj.value, type));
 
             // Insert the HTML into the DOM

@@ -171,6 +171,12 @@ var UIController = (function () {
         }
         return (type == 'exp' ? '-' : '+') + ' ' + int + '.' + dec;
     };
+
+    var nodeListForEach = function (list, callback) {
+        for (var i = 0; i < list.length; i++) {
+            callback(list[i], i);
+        }
+    };
     return {
         getinput: function () {
             return { //instead of repeating myself, this will loop for both inc and exp
@@ -240,12 +246,6 @@ var UIController = (function () {
             //this creates a nodelist
             var fields = document.querySelectorAll(DOMstrings.expensesPercLabel);
 
-            // HERE IS A FIRST CLASS FUNCTION AT WORK!! A FUNCTION PASSING FUNCTIONS
-            var nodeListForEach = function (list, callback) {
-                for (var i = 0; i < list.length; i++) {
-                    callback(list[i], i);
-                }
-            };
             nodeListForEach(fields, function (current, index) {
                 if (percentages[index] > 0) {
                     current.textContent = percentages[index] + '%';
@@ -254,7 +254,8 @@ var UIController = (function () {
                 }
             });
         },
-
+        
+        //Displaying the month and date
         displayMonth: function(){
             var now, month, year, monthName;
             now = new Date(); //If Date is empty, it'll return today's date
@@ -266,6 +267,19 @@ var UIController = (function () {
             document.querySelector(DOMstrings.dateLabel).textContent = monthName[month] + ', ' + year; 
         },
         
+        // changes color when switching to + or -
+        changeType: function(){
+            var fields = document.querySelectorAll(
+                DOMstrings.inputType+ ',' +
+                DOMstrings.inputDescription+ ',' +
+                DOMstrings.inputValue
+            );
+
+            nodeListForEach(fields, function(cur){
+                cur.classList.toggle('red-focus');
+            });
+            document.querySelector(DOMstrings.addButton).classList.toggle('red');
+        },
         getDOMstrings: function () {
             return DOMstrings;
         }
@@ -288,7 +302,8 @@ var controller = (function (budgetCtrl, UICtrl) {
             }
         });
 
-        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem); 
+        document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changeType);
     };
 
     var updateBudget = function () {
